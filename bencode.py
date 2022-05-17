@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from itertools import islice, takewhile
-from typing import Any, StringIO, BinaryIO, Iterator
+from typing import Any, TextIO, BinaryIO, Iterator
 
 
 def dumps(v: Any) -> str:
@@ -73,7 +73,7 @@ def dump(data: Any, io: BinaryIO, encoding: str = 'utf8'):
     io.write(encoded)
 
 
-def sdump(data: Any, io: StringIO):
+def sdump(data: Any, io: TextIO):
     encoded = dumps(data)
     io.write(encoded)
 
