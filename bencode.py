@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from copyreg import pickle
+from io import StringIO
 from itertools import islice, takewhile
 from typing import IO, Any, BinaryIO, Iterator
 
@@ -67,3 +67,12 @@ def _loads(it: Iterator) -> Any:
 
     elif ch == 0x65:  # 'e': end of the list or dict
         return None
+
+
+def dump(data: Any, io: StringIO):
+    encoded = dumps(data)
+    io.write(encoded)
+
+
+def load(io: BinaryIO):
+    return loads(io.read())
