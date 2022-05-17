@@ -4,6 +4,7 @@ from typing import Any, TextIO, BinaryIO, Iterator
 
 
 def dumps(v: Any) -> str:
+    """Bencodes any type of data"""    
     if isinstance(v, int):
         return f'i{v}e'
 
@@ -26,6 +27,7 @@ def dumps(v: Any) -> str:
 
 
 def loads(data: bytes) -> Any:
+    """Unpacks bencoded data"""
     it = iter(data)
     return _loads(it)
 
@@ -68,15 +70,18 @@ def _loads(it: Iterator) -> Any:
         return None
 
 
-def dump(data: Any, io: BinaryIO, encoding: str = 'utf8'):
-    encoded = dumps(data).encode('utf8')
+def dump(data: Any, io: BinaryIO, encoding: str = 'utf8') -> None:
+    """Bencodes data and writes the bytes result into the io"""
+    encoded = dumps(data).encode(encoding)
     io.write(encoded)
 
 
-def sdump(data: Any, io: TextIO):
+def sdump(data: Any, io: TextIO) -> None:
+    """Bencodes data and writes the string result into the io"""
     encoded = dumps(data)
     io.write(encoded)
 
 
-def load(io: BinaryIO):
+def load(io: BinaryIO) -> Any:
+    """Reads benocded data from the io"""
     return loads(io.read())
