@@ -2,7 +2,7 @@ import bencode
 
 def main():
     with open('example.torrent', 'rb') as file:
-        decoded = bencode.decode(file.read())
+        decoded = bencode.loads(file.read())
     
     print(decoded)
 
