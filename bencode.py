@@ -1,5 +1,6 @@
 from collections import OrderedDict
-from typing import Any, List
+from typing import Any
+
 
 def encode(v: Any) -> str:
     if isinstance(v, int):
@@ -11,10 +12,10 @@ def encode(v: Any) -> str:
     elif isinstance(v, bytes):
         return f'{len(v)}:{v.decode("utf8")}'
     
-    elif isinstance(v, list | OrderedDict):
+    elif isinstance(v, list):
         return f'l{"".join(encode(i) for i in v)}e'
         
-    elif isinstance(v, dict):
+    elif isinstance(v, dict | OrderedDict):
         out = 'd'
         for key, value in v.items():
             key = encode(key)
