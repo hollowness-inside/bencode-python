@@ -1,10 +1,10 @@
 from collections import OrderedDict
 from itertools import islice, takewhile
-from typing import Any, TextIO, BinaryIO, Iterator
+from typing import IO, Any, Iterator
 
 
 def dumps(v: Any) -> str:
-    """Bencodes any type of data"""    
+    """Bencodes any type of data into a string"""    
     if isinstance(v, int):
         return f'i{v}e'
 
@@ -24,6 +24,18 @@ def dumps(v: Any) -> str:
             value = dumps(value)
             out += f'{key}{value}'
         return out + 'e'
+
+
+def dump(data: Any, io: IO[bytes], encoding: str = 'utf8') -> None:
+    """Bencodes data and writes the bytes result into the io"""
+    encoded = dumps(data).encode(encoding)
+    io.write(encoded)
+
+
+def sdump(data: Any, io: IO[str]) -> None:
+    """Bencodes data and writes the string result into the io"""
+    encoded = dumps(data)
+    io.write(encoded)
 
 
 def loads(data: bytes) -> Any:
@@ -70,18 +82,6 @@ def _loads(it: Iterator) -> Any:
         return None
 
 
-def dump(data: Any, io: BinaryIO, encoding: str = 'utf8') -> None:
-    """Bencodes data and writes the bytes result into the io"""
-    encoded = dumps(data).encode(encoding)
-    io.write(encoded)
-
-
-def sdump(data: Any, io: TextIO) -> None:
-    """Bencodes data and writes the string result into the io"""
-    encoded = dumps(data)
-    io.write(encoded)
-
-
-def load(io: BinaryIO) -> Any:
+def load(io: IO[bytes]) -> Any:
     """Reads benocded data from the io"""
     return loads(io.read())
